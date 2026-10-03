@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://bv2xegjdb857i"]
+
+[ext_resource type="Script" uid="uid://coqx2krkjvel8" path="res://Scripts/graphEdge.cs" id="1_5pi61"]
+[ext_resource type="Texture2D" uid="uid://c6p8bobg4s7e" path="res://Images/arrowHead.png" id="2_n4ryp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8e8q5"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qhkv7"]
+
+[node name="graphEdge" type="Line2D" node_paths=PackedStringArray("arrowHead", "weightLabel")]
+points = PackedVector2Array(2, 3, -8, -5)
+width = 4.0
+antialiased = true
+script = ExtResource("1_5pi61")
+arrowHead = NodePath("arrowHead")
+weightLabel = NodePath("weightLabel")
+
+[node name="arrowHead" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_n4ryp")
+
+[node name="weightLabel" type="LineEdit" parent="."]
+modulate = Color(0.0954303, 0.36924, 1, 1)
+z_index = 4
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -27.0
+offset_top = -25.0
+offset_right = 23.0
+offset_bottom = 25.0
+grow_horizontal = 2
+theme_override_colors/selection_color = Color(0.478431, 0.478431, 0.478431, 0.917647)
+theme_override_colors/caret_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+theme_override_styles/focus = SubResource("StyleBoxFlat_8e8q5")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qhkv7")
+
+[connection signal="text_submitted" from="weightLabel" to="." method="weightLabelUpdated"]

@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://cua1emqdofqne"]
+
+[ext_resource type="Script" uid="uid://djutgfk8cpfg2" path="res://Scripts/graphNode.cs" id="1_6rwe5"]
+[ext_resource type="Texture2D" uid="uid://b8478hjj65gb" path="res://Images/red circle.png" id="2_cxebs"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wytqb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2hrae"]
+
+[node name="graphNode" type="Node2D" node_paths=PackedStringArray("Number", "nodeImage")]
+z_index = 3
+script = ExtResource("1_6rwe5")
+Number = NodePath("number")
+nodeImage = NodePath("nodeImage")
+
+[node name="nodeImage" type="Sprite2D" parent="."]
+z_index = 1
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_cxebs")
+
+[node name="number" type="Label" parent="."]
+offset_right = 1.0
+offset_bottom = 23.0
+label_settings = SubResource("LabelSettings_wytqb")
+
+[node name="graphNodeArea" type="Area2D" parent="."]
+
+[node name="graphNodeShape" type="CollisionShape2D" parent="graphNodeArea"]
+scale = Vector2(2.7, 2.7)
+shape = SubResource("CircleShape2D_2hrae")

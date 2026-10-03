@@ -1,0 +1,62 @@
+[gd_scene load_steps=2 format=3 uid="uid://bls842wam1lef"]
+
+[ext_resource type="Script" uid="uid://d1ydpk6ai2o4d" path="res://Scripts/startMenu.cs" id="1_7unau"]
+
+[node name="startMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7unau")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = -960.0
+offset_top = -540.0
+offset_right = -192.0
+offset_bottom = -108.0
+scale = Vector2(2.5, 2.5)
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="graphGenButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Generate graph
+"
+
+[node name="graphCreateButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Sandbox"
+
+[node name="graphQuizButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quiz
+"
+
+[node name="leaderboardButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Leaderboard"
+
+[node name="userStatsButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "User Stats"
+
+[node name="quitButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/graphGenButton" to="." method="onGraphGenButtonPressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/graphCreateButton" to="." method="onGraphCreateButtonPressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/graphQuizButton" to="." method="onGraphQuizButtonPressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/leaderboardButton" to="." method="onLeaderboardPressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/userStatsButton" to="." method="onUserStatsPressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/quitButton" to="." method="onQuitButtonPressed"]

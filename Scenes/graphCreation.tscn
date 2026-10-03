@@ -1,0 +1,194 @@
+[gd_scene load_steps=6 format=3 uid="uid://d30nvhbkyof3t"]
+
+[ext_resource type="Script" uid="uid://crkerj43licjd" path="res://Scripts/graphCreation.cs" id="1_5mncn"]
+[ext_resource type="PackedScene" uid="uid://cua1emqdofqne" path="res://Scenes/graphNode.tscn" id="2_3772x"]
+[ext_resource type="PackedScene" uid="uid://bv2xegjdb857i" path="res://Scenes/graphEdge.tscn" id="3_tvgft"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i7ifo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cxlq3"]
+bg_color = Color(0.306923, 0.306923, 0.306923, 1)
+
+[node name="graphCreation" type="Node2D" node_paths=PackedStringArray("sourceNodeInput", "goalNodeInput", "adjacencyLabel", "formatPanel", "distanceTableLabel", "shortestPathLabel")]
+script = ExtResource("1_5mncn")
+nodeScene = ExtResource("2_3772x")
+edgeScene = ExtResource("3_tvgft")
+sourceNodeInput = NodePath("sourceNodeInput")
+goalNodeInput = NodePath("goalNodeInput")
+adjacencyLabel = NodePath("formatPanel/adjacencyLabel")
+formatPanel = NodePath("formatPanel")
+distanceTableLabel = NodePath("distanceTableLabel")
+shortestPathLabel = NodePath("shortestPathLabel")
+
+[node name="graphBorder" type="Sprite2D" parent="."]
+scale = Vector2(27, 27)
+
+[node name="ColorRect" type="ColorRect" parent="graphBorder"]
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 1
+
+[node name="validArea" type="Area2D" parent="graphBorder"]
+
+[node name="collider" type="CollisionShape2D" parent="graphBorder/validArea"]
+position = Vector2(20, 20)
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_i7ifo")
+
+[node name="addNodesButton" type="Button" parent="."]
+offset_left = 1115.0
+offset_top = 240.0
+offset_right = 1311.0
+offset_bottom = 332.0
+mouse_filter = 1
+theme_override_font_sizes/font_size = 36
+text = "Add Nodes"
+
+[node name="addEdgesButton" type="Button" parent="."]
+offset_left = 1350.0
+offset_top = 240.0
+offset_right = 1546.0
+offset_bottom = 332.0
+mouse_filter = 1
+theme_override_font_sizes/font_size = 36
+text = "Add Edges"
+
+[node name="toggleWeight" type="CheckButton" parent="."]
+offset_left = 1095.0
+offset_top = 6.0
+offset_right = 1256.0
+offset_bottom = 47.0
+scale = Vector2(3, 3)
+mouse_filter = 1
+text = "Weighted
+"
+
+[node name="clearButton" type="Button" parent="."]
+offset_left = 1600.0
+offset_top = 242.0
+offset_right = 1800.0
+offset_bottom = 334.0
+mouse_filter = 1
+theme_override_font_sizes/font_size = 36
+text = "Clear"
+
+[node name="toggleDirection" type="CheckButton" parent="."]
+offset_left = 1096.0
+offset_top = 115.0
+offset_right = 1257.0
+offset_bottom = 156.0
+scale = Vector2(3, 3)
+mouse_filter = 1
+text = "Directed
+"
+
+[node name="dijkstraButton" type="Button" parent="."]
+offset_left = 1661.0
+offset_top = 396.0
+offset_right = 1883.0
+offset_bottom = 496.0
+theme_override_font_sizes/font_size = 36
+text = "Run Dijkstra"
+
+[node name="sourceNodeInput" type="LineEdit" parent="."]
+offset_left = 1758.0
+offset_top = 517.0
+offset_right = 1858.0
+offset_bottom = 613.0
+theme_override_font_sizes/font_size = 25
+
+[node name="sourceNodeLabel" type="Label" parent="sourceNodeInput"]
+layout_mode = 0
+offset_left = -244.0
+offset_top = 15.0
+offset_right = -12.0
+offset_bottom = 71.0
+theme_override_font_sizes/font_size = 36
+text = "Source Node:"
+
+[node name="goalNodeLabel" type="Label" parent="."]
+offset_left = 1560.0
+offset_top = 656.0
+offset_right = 1751.0
+offset_bottom = 706.0
+theme_override_font_sizes/font_size = 36
+text = "Goal Node:"
+
+[node name="goalNodeInput" type="LineEdit" parent="."]
+offset_left = 1761.0
+offset_top = 639.0
+offset_right = 1861.0
+offset_bottom = 740.0
+theme_override_font_sizes/font_size = 25
+
+[node name="adjMatrixButton" type="Button" parent="."]
+offset_left = 1587.0
+offset_top = 10.0
+offset_right = 1903.0
+offset_bottom = 119.0
+theme_override_font_sizes/font_size = 36
+text = " Adjacency Matrix
+"
+
+[node name="adjListButton" type="Button" parent="."]
+offset_left = 1587.0
+offset_top = 130.0
+offset_right = 1903.0
+offset_bottom = 239.0
+theme_override_font_sizes/font_size = 36
+text = " Adjacency List
+"
+
+[node name="formatPanel" type="Panel" parent="."]
+visible = false
+visibility_layer = 17
+z_index = 20
+offset_left = 36.0
+offset_top = 36.0
+offset_right = 1036.0
+offset_bottom = 1036.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_cxlq3")
+
+[node name="quitPanelButton" type="Button" parent="formatPanel"]
+layout_mode = 0
+offset_left = 896.0
+offset_top = 3.0
+offset_right = 996.0
+offset_bottom = 103.0
+text = "X"
+
+[node name="adjacencyLabel" type="Label" parent="formatPanel"]
+layout_mode = 0
+offset_left = 98.0
+offset_top = 104.0
+offset_right = 898.0
+offset_bottom = 904.0
+theme_override_font_sizes/font_size = 25
+
+[node name="distanceTableLabel" type="Label" parent="."]
+offset_left = 1114.0
+offset_top = 517.0
+offset_right = 1428.0
+offset_bottom = 917.0
+
+[node name="shortestPathLabel" type="Label" parent="."]
+offset_left = 1099.0
+offset_top = 921.0
+offset_right = 1413.0
+offset_bottom = 1059.0
+theme_override_font_sizes/font_size = 24
+
+[connection signal="input_event" from="graphBorder/validArea" to="." method="validAreaInputEvent"]
+[connection signal="mouse_entered" from="graphBorder/validArea" to="." method="validAreaEntered"]
+[connection signal="mouse_exited" from="graphBorder/validArea" to="." method="validAreaExited"]
+[connection signal="pressed" from="addNodesButton" to="." method="addNodesPressed"]
+[connection signal="pressed" from="addEdgesButton" to="." method="onAddEdgesPressed"]
+[connection signal="toggled" from="toggleWeight" to="." method="onWeightToggled"]
+[connection signal="pressed" from="clearButton" to="." method="onClearButtonPressed"]
+[connection signal="toggled" from="toggleDirection" to="." method="onDirectionToggled"]
+[connection signal="pressed" from="dijkstraButton" to="." method="onDijkstraButtonPressed"]
+[connection signal="text_submitted" from="sourceNodeInput" to="." method="sourceNodeSubmitted"]
+[connection signal="text_submitted" from="goalNodeInput" to="." method="goalNodeSubmitted"]
+[connection signal="pressed" from="adjMatrixButton" to="." method="adjMatrixButtonPressed"]
+[connection signal="pressed" from="adjListButton" to="." method="onAdjListButtonPressed"]
+[connection signal="pressed" from="formatPanel/quitPanelButton" to="." method="onQuitPanelButtonPressed"]

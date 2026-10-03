@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://cok70e326ax4h"]
+
+[ext_resource type="Script" uid="uid://tmtq0nknf2cg" path="res://Scripts/graphQuiz.cs" id="1_ffuv3"]
+
+[node name="graphQuiz" type="Node2D"]
+script = ExtResource("1_ffuv3")
+
+[node name="backButton" type="Button" parent="."]
+offset_left = 1693.0
+offset_top = 975.0
+offset_right = 1915.0
+offset_bottom = 1075.0
+theme_override_font_sizes/font_size = 36
+text = "Return"
+
+[connection signal="pressed" from="backButton" to="." method="backButtonPressed"]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dx4q0mcxo7amu"]
+
+[ext_resource type="Script" uid="uid://ihg2gnynrjdc" path="res://Scripts/userLeaderboard.cs" id="1_vsnnb"]
+
+[node name="userLeaderboard" type="Node"]
+script = ExtResource("1_vsnnb")
