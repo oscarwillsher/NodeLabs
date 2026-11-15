@@ -32,6 +32,20 @@ public partial class userAccess : Node
 		//returns deserialized data
 	}
 	
+	private string currentUserDataPath= "Databases/currentUserData.json";
+	
+	public string loadUsername()
+	{
+		string currentUser= File.ReadAllText(currentUserDataPath);
+		return currentUser;
+	}
+	
+	public void storeUsername(string username)
+	{
+		string currentUser= JsonSerializer.Serialize(username, new JsonSerializerOptions { WriteIndented= true });
+		File.WriteAllText(currentUserDataPath, currentUser);
+	}
+	
 	public bool registerUser(string username, string email, string password)
 	{
 		
@@ -132,7 +146,6 @@ public partial class userAccess : Node
 		
 	}
 	
-
 	public void logUserIn(string userTag, string password)
 	{
 		List<Dictionary<string, string>> userData = loadData();
@@ -140,6 +153,7 @@ public partial class userAccess : Node
 		{
 			if((user["username"] == userTag||user["email"]== userTag)&&user["password"]== password)
 			{
+				storeUsername(userTag);
 				GD.Print("Logged in.");
 				GetTree().ChangeSceneToFile("res://Scenes/startMenu.tscn");
 				return;
@@ -156,6 +170,7 @@ public partial class userAccess : Node
 		bool accessToProgram= registerUser(username, email, password);
 		if(accessToProgram)
 		{
+			storeUsername(username);
 			GD.Print("registered!");
 			GetTree().ChangeSceneToFile("res://Scenes/startMenu.tscn");
 		}

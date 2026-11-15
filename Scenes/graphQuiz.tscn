@@ -1,9 +1,115 @@
-[gd_scene load_steps=2 format=3 uid="uid://cok70e326ax4h"]
+[gd_scene load_steps=8 format=3 uid="uid://3sakf2602ktt"]
 
-[ext_resource type="Script" uid="uid://tmtq0nknf2cg" path="res://Scripts/graphQuiz.cs" id="1_ffuv3"]
+[ext_resource type="Script" path="res://Scripts/graphQuiz.cs" id="1_ffuv3"]
+[ext_resource type="PackedScene" uid="uid://cua1emqdofqne" path="res://Scenes/graphNode.tscn" id="2_7pesc"]
+[ext_resource type="PackedScene" uid="uid://bv2xegjdb857i" path="res://Scenes/graphEdge.tscn" id="3_ii6ju"]
+[ext_resource type="PackedScene" uid="uid://xclsy077gswp" path="res://Scenes/userAccess.tscn" id="4_v3tjv"]
 
-[node name="graphQuiz" type="Node2D"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wqqtu"]
+bg_color = Color(0.564706, 0.564706, 0.564706, 0.713726)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rivu5"]
+bg_color = Color(0, 0, 0, 0.364706)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rfnak"]
+bg_color = Color(0, 0, 0, 0.364706)
+
+[node name="graphQuiz" type="Node2D" node_paths=PackedStringArray("distanceTableLabel", "shortestPathLabel", "errorMessagePanel", "errorMessageLabel", "startButton", "questionLabel", "answerInput", "distanceInput", "correctPanel", "incorrectPanel", "incorrectMessage")]
 script = ExtResource("1_ffuv3")
+nodeScene = ExtResource("2_7pesc")
+edgeScene = ExtResource("3_ii6ju")
+distanceTableLabel = NodePath("distanceTableLabel")
+shortestPathLabel = NodePath("shortestPathLabel")
+errorMessagePanel = NodePath("errorMessagePanel")
+errorMessageLabel = NodePath("errorMessagePanel/errorMessageLabel")
+startButton = NodePath("startButton")
+questionLabel = NodePath("questionLabel")
+answerInput = NodePath("answerInput")
+distanceInput = NodePath("distanceInput")
+correctPanel = NodePath("correctPanel")
+incorrectPanel = NodePath("incorrectPanel")
+incorrectMessage = NodePath("incorrectPanel/incorrectMessage")
+userAccess = ExtResource("4_v3tjv")
+
+[node name="graphBorder" type="Sprite2D" parent="."]
+scale = Vector2(27, 27)
+
+[node name="ColorRect" type="ColorRect" parent="graphBorder"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="answerButton" type="Button" parent="."]
+offset_left = 1574.0
+offset_top = 297.0
+offset_right = 1845.0
+offset_bottom = 397.0
+theme_override_font_sizes/font_size = 36
+text = "Submit Answer
+"
+
+[node name="nopathButton" type="Button" parent="."]
+offset_left = 1574.0
+offset_top = 420.0
+offset_right = 1845.0
+offset_bottom = 520.0
+theme_override_font_sizes/font_size = 36
+text = "No Path
+"
+
+[node name="answerInput" type="LineEdit" parent="."]
+offset_left = 1389.0
+offset_top = 176.0
+offset_right = 1878.0
+offset_bottom = 266.0
+
+[node name="distanceInput" type="LineEdit" parent="."]
+offset_left = 1388.0
+offset_top = 297.0
+offset_right = 1531.0
+offset_bottom = 387.0
+
+[node name="errorMessagePanel" type="Panel" parent="."]
+visible = false
+visibility_layer = 17
+z_index = 20
+offset_left = 242.0
+offset_top = 355.0
+offset_right = 802.0
+offset_bottom = 666.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wqqtu")
+
+[node name="exitErrorButton" type="Button" parent="errorMessagePanel"]
+layout_mode = 0
+offset_left = 460.0
+offset_top = 5.0
+offset_right = 560.0
+offset_bottom = 105.0
+text = "X"
+
+[node name="errorMessageLabel" type="Label" parent="errorMessagePanel"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 63.0
+offset_right = 441.0
+offset_bottom = 259.0
+theme_override_font_sizes/font_size = 18
+
+[node name="distanceTableLabel" type="Label" parent="."]
+visible = false
+offset_left = 1110.0
+offset_top = 600.0
+offset_right = 1480.0
+offset_bottom = 1070.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_rivu5")
+
+[node name="shortestPathLabel" type="Label" parent="."]
+visible = false
+offset_left = 1110.0
+offset_top = 480.0
+offset_right = 1480.0
+offset_bottom = 600.0
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_rfnak")
 
 [node name="backButton" type="Button" parent="."]
 offset_left = 1693.0
@@ -13,4 +119,100 @@ offset_bottom = 1075.0
 theme_override_font_sizes/font_size = 36
 text = "Return"
 
+[node name="questionLabel" type="Label" parent="."]
+offset_left = 1094.0
+offset_top = 19.0
+offset_right = 1912.0
+offset_bottom = 139.0
+theme_override_font_sizes/font_size = 36
+text = "Find the shortest path and distance between:"
+
+[node name="distanceLabel" type="Label" parent="."]
+offset_left = 1149.0
+offset_top = 310.0
+offset_right = 1321.0
+offset_bottom = 385.0
+theme_override_font_sizes/font_size = 36
+text = "Distance: "
+
+[node name="userPathLabel" type="Label" parent="."]
+offset_left = 1111.0
+offset_top = 186.0
+offset_right = 1367.0
+offset_bottom = 261.0
+theme_override_font_sizes/font_size = 36
+text = "Shortest Path: "
+
+[node name="startButton" type="Button" parent="."]
+offset_left = 807.0
+offset_top = 444.0
+offset_right = 1175.0
+offset_bottom = 597.0
+theme_override_font_sizes/font_size = 48
+text = "Start"
+
+[node name="correctPanel" type="Panel" parent="."]
+visible = false
+visibility_layer = 17
+z_index = 20
+offset_left = 69.0
+offset_top = 123.0
+offset_right = 629.0
+offset_bottom = 434.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wqqtu")
+
+[node name="correctMessage" type="Label" parent="correctPanel"]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 15.0
+offset_right = 525.0
+offset_bottom = 171.0
+theme_override_font_sizes/font_size = 36
+text = "Correct Answer!
+Press next question to 
+generate a new question"
+
+[node name="nextQuestionButton" type="Button" parent="correctPanel"]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 193.0
+offset_right = 403.0
+offset_bottom = 278.0
+theme_override_font_sizes/font_size = 24
+text = "Next Question"
+
+[node name="incorrectPanel" type="Panel" parent="."]
+visible = false
+visibility_layer = 17
+z_index = 20
+offset_left = 71.0
+offset_top = 122.0
+offset_right = 631.0
+offset_bottom = 433.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wqqtu")
+
+[node name="incorrectMessage" type="Label" parent="incorrectPanel"]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 15.0
+offset_right = 525.0
+offset_bottom = 171.0
+theme_override_font_sizes/font_size = 24
+text = "Incorrect."
+
+[node name="exitQuizButton" type="Button" parent="incorrectPanel"]
+layout_mode = 0
+offset_left = 158.0
+offset_top = 193.0
+offset_right = 403.0
+offset_bottom = 278.0
+theme_override_font_sizes/font_size = 24
+text = "Exit "
+
+[connection signal="pressed" from="answerButton" to="." method="onAnswerButtonPressed"]
+[connection signal="pressed" from="nopathButton" to="." method="noPathPressed"]
+[connection signal="pressed" from="errorMessagePanel/exitErrorButton" to="." method="exitErrorPressed"]
 [connection signal="pressed" from="backButton" to="." method="backButtonPressed"]
+[connection signal="pressed" from="startButton" to="." method="onStartPressed"]
+[connection signal="pressed" from="correctPanel/nextQuestionButton" to="." method="nextQuestionPressed"]
+[connection signal="pressed" from="incorrectPanel/exitQuizButton" to="." method="exitQuizPressed"]

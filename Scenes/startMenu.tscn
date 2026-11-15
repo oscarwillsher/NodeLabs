@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bls842wam1lef"]
 
-[ext_resource type="Script" uid="uid://d1ydpk6ai2o4d" path="res://Scripts/startMenu.cs" id="1_7unau"]
+[ext_resource type="Script" path="res://Scripts/startMenu.cs" id="1_7unau"]
 
 [node name="startMenu" type="Control"]
 layout_mode = 3
@@ -28,6 +28,12 @@ layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
+[node name="nodeLabsTitle" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = " Node Labs"
+horizontal_alignment = 1
+
 [node name="graphGenButton" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Generate graph
@@ -46,6 +52,10 @@ text = "Quiz
 layout_mode = 2
 text = "Leaderboard"
 
+[node name="instructionsButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Instructions"
+
 [node name="userStatsButton" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "User Stats"
@@ -54,9 +64,20 @@ text = "User Stats"
 layout_mode = 2
 text = "Quit"
 
+[node name="logoutButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 736.0
+offset_top = 440.0
+offset_right = 958.0
+offset_bottom = 540.0
+theme_override_font_sizes/font_size = 36
+text = "Log out"
+
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/graphGenButton" to="." method="onGraphGenButtonPressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/graphCreateButton" to="." method="onGraphCreateButtonPressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/graphQuizButton" to="." method="onGraphQuizButtonPressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/leaderboardButton" to="." method="onLeaderboardPressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/instructionsButton" to="." method="onInstructionsPressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/userStatsButton" to="." method="onUserStatsPressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/quitButton" to="." method="onQuitButtonPressed"]
+[connection signal="pressed" from="logoutButton" to="." method="logoutPressed"]

@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=3 uid="uid://do6uhew0ohq5u"]
+
+[ext_resource type="Script" path="res://Scripts/userInstructions.cs" id="1_nnnwe"]
+
+[node name="userInstructions" type="Node"]
+script = ExtResource("1_nnnwe")
+
+[node name="instructionsLabel" type="Label" parent="."]
+offset_left = 559.0
+offset_top = 234.0
+offset_right = 1349.0
+offset_bottom = 747.0
+text = "Instructions
+
+Graph Generation (automatic)
+This mode can generate graphs for you automatically. 
+
+Graph Creation (Manual) 
+This mode allows you to create your own graphs.
+
+Dijkstra's algorithm
+Can be run in both creation and generation.
+
+Quiz Mode (Ranked)
+This mode allows you to test your knowledge on Dijkstra's algorithm and compete with your friends. 
+Make sure your shortest path is presented like this example: 0>3>4>5 with no spaces
+
+Leaderboard
+This tracks your progress against other players in the quiz mode.
+Play a quiz mode game to get on there!"
+
+[node name="backButton" type="Button" parent="."]
+offset_left = 1693.0
+offset_top = 975.0
+offset_right = 1915.0
+offset_bottom = 1075.0
+theme_override_font_sizes/font_size = 36
+text = "Return"
+
+[connection signal="pressed" from="backButton" to="." method="backButtonPressed"]

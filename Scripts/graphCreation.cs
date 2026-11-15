@@ -13,12 +13,14 @@ public partial class graphCreation : Node2D
 	[Export] private bool addEdges= false;  
 	[Export] private bool editable= false;  
 
-	//added from graph generation
+	//added from graph generation after development of pathfinding algorithms
 	[Export] private int nodeCount=0;      
 	[Export] private LineEdit sourceNodeInput;
 	[Export] private LineEdit goalNodeInput;
 	[Export] private Label adjacencyLabel;
 	[Export] private Panel formatPanel;
+	[Export] private Panel errorMessagePanel;
+	[Export] private Label errorMessageLabel;
 	[Export] private Label distanceTableLabel;
 	[Export] private Label shortestPathLabel;
 	
@@ -26,8 +28,9 @@ public partial class graphCreation : Node2D
 	public List<graphEdge> edgeList = new List<graphEdge>(); 
 	private int nodeId=0;
 	public bool creationMode = true;
+	
 	public int sourceNode=0;
-	public int goalNode=4;
+	public int goalNode=-1;
 	private int[,] adjMatrix;
 	Dictionary<int, List<(int,int)>> adjList;
 
@@ -103,6 +106,9 @@ public partial class graphCreation : Node2D
 		{
 			if (node.Position.DistanceTo(position)<sepValue)  
 			{
+				//error for placing nodes too close
+				errorMessageLabel.Text="Cannot place nodes too close to each other.";
+				errorMessagePanel.Visible= true;
 				GD.Print("too close to another node");
 				return;
 			}
@@ -114,6 +120,13 @@ public partial class graphCreation : Node2D
 		nodeList.Add(newNode);
 		nodeId++;
 		nodeCount++;
+		goalNode++;
+		//resets the inputs for the goal and source nodes to display the placeholder text
+		goalNodeInput.PlaceholderText=$"{goalNode}";
+		sourceNodeInput.PlaceholderText="0";
+		goalNodeInput.Text="";
+		sourceNodeInput.Text=$"";
+	
 	}
 
 	private void createEdge(graphNode start, graphNode end, bool isWeighted, bool isDirected)
@@ -207,14 +220,23 @@ public partial class graphCreation : Node2D
 	
 	private void onClearButtonPressed()
 	{
+		nodeId=0;
+		shortestPathLabel.Visible= false;
+		distanceTableLabel.Visible= false;
+		goalNode=nodeCount-1;
+		goalNodeInput.PlaceholderText=$"{nodeCount-1}";
+		goalNodeInput.Text="";
+		sourceNode=0;
+		sourceNodeInput.PlaceholderText="";
+		sourceNodeInput.Text="";
 		if(nodeList.Count!=0)
 		{
 			for(int i=0;i<nodeList.Count;i++)
 			{
 				nodeList[i].QueueFree();
 			}
-			nodeCount++;
 			nodeList.Clear();
+			nodeCount=0;
 		}
 		if(edgeList.Count!=0)
 		{
@@ -223,10 +245,13 @@ public partial class graphCreation : Node2D
 				edgeList[j].QueueFree();
 			}
 			edgeList.Clear();
+			
 		}
 	}
-	private void onDijsktraButtonPressed()
+
+	private void onDijkstraButtonPressed()
 	{
+		//resets all of the edge colours to their original colour
 		foreach(graphEdge edge in edgeList)
 		{
 			edge.DefaultColor= Colors.Black;
@@ -337,6 +362,13 @@ public partial class graphCreation : Node2D
 
 	private void runDijkstra(int[, ] graph, int source, int goal, int nodeCount)
 	{
+		if(!isWeighted)
+		{
+			//cannot run dijkstra's on an unweighted graph.
+			errorMessageLabel.Text="Cannot run Dijkstra's on an unweighted graph.";
+			errorMessagePanel.Visible= true;
+			return;
+		}
 		bool[] visited= new bool[nodeCount];
 		Array.Fill(visited, false); // No nodes visited yet, so all values are false
 		int[] distance= new int[nodeCount];
@@ -388,16 +420,20 @@ public partial class graphCreation : Node2D
 		if(distance[goal]== int.MaxValue)
 		{
 			GD.Print("Goal is unreachable");
+			errorMessageLabel.Text="Goal is unreachable.";
+			errorMessagePanel.Visible= true;
 			return;
 		}
-		GD.Print($"Shortest path length: {distance[goal]}");
-		GD.Print($"Path: {string.Join(">", path)}");
+		//GD.Print($"Shortest path length: {distance[goal]}");
+		//GD.Print($"Path: {string.Join(">", path)}");
 		//GD.Print($"Previous: [{string.Join(",", previous)}]");
 		//GD.Print($"Distance: [{string.Join(",", distance)}]");
 		//GD.Print($"Visited: [{string.Join(",", visited)}]");
-		//Lines to test if everything works
-		
+		//Lines to test if everything works ^
 		formatDistanceTable(distance, previous);
+		
+		//Shows path and total distance in text format
+		shortestPathLabel.Visible= true;
 		shortestPathLabel.Text= $"Path: {string.Join(">", path)}\n Total distance: {distance[goal]}";
 
 		for(int i=0;i<path.Count-1;i++)
@@ -414,14 +450,28 @@ public partial class graphCreation : Node2D
 		}
 	}
 	
+	private void onExitErrorPressed()
+	{
+		errorMessagePanel.Visible= false;
+	}
+
 	private void formatDistanceTable(int[] distance, int[] previous)
 	{
+		//Adds rows to create a table in the form of one big string
 		string distanceTable= "Node Distance Previous";
 		for(int i=0;i<distance.Length;i++)
 		{
-			distanceTable+=$"\n{i}    {distance[i]}         {previous[i]}";
+			if(distance[i]==int.MaxValue)
+			{
+				distanceTable+=$"\n{i}          ∞                 {previous[i]}";
+			}
+			else
+			{
+				distanceTable+=$"\n{i}          {distance[i]}                 {previous[i]}";
+			}
 		}
 		distanceTableLabel.Text= distanceTable;
+		distanceTableLabel.Visible= true;
 	}
 	
 	private void sourceNodeSubmitted(string sourceInput)
@@ -430,12 +480,18 @@ public partial class graphCreation : Node2D
 		if(!isNum)
 		{
 			GD.Print("Invalid source node");
+			//error for invalid source node
+			errorMessageLabel.Text="Invalid source node.";
+			errorMessagePanel.Visible= true;
 			sourceNodeInput.Text="";
 			return;
 		}
 		if(sourceNode<0 || sourceNode>=nodeCount)
 		{
 			GD.Print("Invalid source node");
+			//error for invalid source node
+			errorMessageLabel.Text="Invalid source node.";
+			errorMessagePanel.Visible= true;
 			sourceNodeInput.Text="";
 			sourceNode= 0;
 		}
@@ -446,12 +502,18 @@ public partial class graphCreation : Node2D
 		bool isNum= int.TryParse(goalInput, out goalNode);
 		if(!isNum)
 		{
+			//error for invalid goal node
+			errorMessageLabel.Text="Invalid goal node.";
+			errorMessagePanel.Visible= true;
 			GD.Print("Invalid goal node");
 			goalNodeInput.Text="";
 			return;
 		}
 		if(goalNode<0 || goalNode>=nodeCount)
 		{
+			//error for invalid goal node
+			errorMessageLabel.Text="Invalid goal node.";
+			errorMessagePanel.Visible= true;
 			GD.Print("Invalid goal node");
 			goalNode= nodeCount-1;
 			goalNodeInput.Text="";
@@ -474,6 +536,11 @@ public partial class graphCreation : Node2D
 	private void onQuitPanelButtonPressed()
 	{
 		formatPanel.Visible= false;
+	}
+	
+	private void backButtonPressed()
+	{
+		GetTree().ChangeSceneToFile("res://Scenes/startMenu.tscn");
 	}
 	
 }

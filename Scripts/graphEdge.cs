@@ -12,7 +12,6 @@ public partial class graphEdge : Line2D //Pre-generated class
 	public int weight {get;set;}
 	public Vector2 newMidpoint{get;set;}
 	private Vector2 adjustWeightLabel= new Vector2(0,10); 
-	
 
 	public void initializeEdge(graphNode newStart, graphNode newEnd, bool newIsWeighted, bool newIsDirected, int newWeight)
 	{

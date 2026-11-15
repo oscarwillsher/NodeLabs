@@ -1,13 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://ddpdki58whyrf"]
+[gd_scene load_steps=7 format=3 uid="uid://ddpdki58whyrf"]
 
-[ext_resource type="Script" uid="uid://cu1hv3jmv3sht" path="res://Scripts/graphGen.cs" id="1_wtd1r"]
+[ext_resource type="Script" path="res://Scripts/graphGen.cs" id="1_wtd1r"]
 [ext_resource type="PackedScene" uid="uid://cua1emqdofqne" path="res://Scenes/graphNode.tscn" id="2_d8gkw"]
 [ext_resource type="PackedScene" uid="uid://bv2xegjdb857i" path="res://Scenes/graphEdge.tscn" id="3_arbdq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wqqtu"]
 bg_color = Color(0.306923, 0.306923, 0.306923, 1)
 
-[node name="graphGen" type="Node2D" node_paths=PackedStringArray("nodeCountValue", "edgeProbValue", "sourceNodeInput", "goalNodeInput", "adjacencyLabel", "formatPanel", "distanceTableLabel", "shortestPathLabel")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rivu5"]
+bg_color = Color(0, 0, 0, 0.364706)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rfnak"]
+bg_color = Color(0, 0, 0, 0.364706)
+
+[node name="graphGen" type="Node2D" node_paths=PackedStringArray("nodeCountValue", "edgeProbValue", "sourceNodeInput", "goalNodeInput", "adjacencyLabel", "formatPanel", "errorMessagePanel", "errorMessageLabel", "distanceTableLabel", "shortestPathLabel")]
 script = ExtResource("1_wtd1r")
 nodeScene = ExtResource("2_d8gkw")
 edgeScene = ExtResource("3_arbdq")
@@ -18,6 +24,8 @@ sourceNodeInput = NodePath("sourceNodeInput")
 goalNodeInput = NodePath("goalNodeInput")
 adjacencyLabel = NodePath("formatPanel/adjacencyLabel")
 formatPanel = NodePath("formatPanel")
+errorMessagePanel = NodePath("errorMessagePanel")
+errorMessageLabel = NodePath("errorMessagePanel/errorMessageLabel")
 distanceTableLabel = NodePath("distanceTableLabel")
 shortestPathLabel = NodePath("shortestPathLabel")
 
@@ -186,21 +194,59 @@ offset_right = 898.0
 offset_bottom = 904.0
 theme_override_font_sizes/font_size = 25
 
+[node name="errorMessagePanel" type="Panel" parent="."]
+visible = false
+visibility_layer = 17
+z_index = 20
+offset_left = 242.0
+offset_top = 355.0
+offset_right = 802.0
+offset_bottom = 666.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wqqtu")
+
+[node name="exitErrorButton" type="Button" parent="errorMessagePanel"]
+layout_mode = 0
+offset_left = 460.0
+offset_top = 5.0
+offset_right = 560.0
+offset_bottom = 105.0
+text = "X"
+
+[node name="errorMessageLabel" type="Label" parent="errorMessagePanel"]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 63.0
+offset_right = 441.0
+offset_bottom = 259.0
+theme_override_font_sizes/font_size = 18
+
 [node name="distanceTableLabel" type="Label" parent="."]
-offset_left = 1114.0
-offset_top = 517.0
-offset_right = 1428.0
-offset_bottom = 917.0
+visible = false
+offset_left = 1110.0
+offset_top = 600.0
+offset_right = 1480.0
+offset_bottom = 1070.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_rivu5")
 
 [node name="shortestPathLabel" type="Label" parent="."]
-offset_left = 1099.0
-offset_top = 921.0
-offset_right = 1413.0
-offset_bottom = 1059.0
+visible = false
+offset_left = 1110.0
+offset_top = 480.0
+offset_right = 1480.0
+offset_bottom = 600.0
 theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_rfnak")
+
+[node name="backButton" type="Button" parent="."]
+offset_left = 1693.0
+offset_top = 975.0
+offset_right = 1915.0
+offset_bottom = 1075.0
+theme_override_font_sizes/font_size = 36
+text = "Return"
 
 [connection signal="pressed" from="submitButton" to="." method="onSubmitButtonPressed"]
-[connection signal="pressed" from="dijkstraButton" to="." method="onDijsktraButtonPressed"]
+[connection signal="pressed" from="dijkstraButton" to="." method="onDijkstraButtonPressed"]
 [connection signal="toggled" from="toggleWeight" to="." method="onToggleWeight"]
 [connection signal="toggled" from="toggleDirection" to="." method="onDirectionToggled"]
 [connection signal="value_changed" from="slideNodeCount" to="." method="onNodeSliderChange"]
@@ -210,3 +256,5 @@ theme_override_font_sizes/font_size = 24
 [connection signal="pressed" from="adjMatrixButton" to="." method="adjMatrixButtonPressed"]
 [connection signal="pressed" from="adjListButton" to="." method="onAdjListButtonPressed"]
 [connection signal="pressed" from="formatPanel/quitPanelButton" to="." method="onQuitPanelButtonPressed"]
+[connection signal="pressed" from="errorMessagePanel/exitErrorButton" to="." method="onExitErrorPressed"]
+[connection signal="pressed" from="backButton" to="." method="backButtonPressed"]

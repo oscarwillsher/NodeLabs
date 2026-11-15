@@ -17,6 +17,8 @@ public partial class graphGen : Node2D
 	[Export] private LineEdit goalNodeInput;
 	[Export] private Label adjacencyLabel;
 	[Export] private Panel formatPanel;
+	[Export] private Panel errorMessagePanel;
+	[Export] private Label errorMessageLabel;
 	[Export] private Label distanceTableLabel;
 	[Export] private Label shortestPathLabel;
 
@@ -172,11 +174,21 @@ public partial class graphGen : Node2D
 			}
 			edgeList.Clear();
 		}
+		//Hiding shortest path and table when generating a new graph
+		shortestPathLabel.Visible= false;
+		distanceTableLabel.Visible= false;
+		goalNode=nodeCount-1;
+		goalNodeInput.PlaceholderText=$"{nodeCount-1}";
+		goalNodeInput.Text="";
+		sourceNode=0;
+		sourceNodeInput.PlaceholderText=$"0";
+		sourceNodeInput.Text="";
 		generateGraph(edgeProb);
 	}
 	
-	private void onDijsktraButtonPressed()
+	private void onDijkstraButtonPressed()
 	{
+		//resets all of the edge colours to their original colour
 		foreach(graphEdge edge in edgeList)
 		{
 			edge.DefaultColor= Colors.Black;
@@ -287,6 +299,13 @@ public partial class graphGen : Node2D
 
 	private void runDijkstra(int[, ] graph, int source, int goal, int nodeCount)
 	{
+		if(!isWeighted)
+		{
+			//cannot run dijkstra's on an unweighted graph.
+			errorMessageLabel.Text="Cannot run Dijkstra's on an unweighted graph.";
+			errorMessagePanel.Visible= true;
+			return;
+		}
 		bool[] visited= new bool[nodeCount];
 		Array.Fill(visited, false); // No nodes visited yet, so all values are false
 		int[] distance= new int[nodeCount];
@@ -338,16 +357,20 @@ public partial class graphGen : Node2D
 		if(distance[goal]== int.MaxValue)
 		{
 			GD.Print("Goal is unreachable");
+			errorMessageLabel.Text="Goal is unreachable.";
+			errorMessagePanel.Visible= true;
 			return;
 		}
-		GD.Print($"Shortest path length: {distance[goal]}");
-		GD.Print($"Path: {string.Join(">", path)}");
+		//GD.Print($"Shortest path length: {distance[goal]}");
+		//GD.Print($"Path: {string.Join(">", path)}");
 		//GD.Print($"Previous: [{string.Join(",", previous)}]");
 		//GD.Print($"Distance: [{string.Join(",", distance)}]");
 		//GD.Print($"Visited: [{string.Join(",", visited)}]");
-		//Lines to test if everything works
-		
+		//Lines to test if everything works ^
 		formatDistanceTable(distance, previous);
+		
+		//Shows path and total distance in text format
+		shortestPathLabel.Visible= true;
 		shortestPathLabel.Text= $"Path: {string.Join(">", path)}\n Total distance: {distance[goal]}";
 
 		for(int i=0;i<path.Count-1;i++)
@@ -364,14 +387,29 @@ public partial class graphGen : Node2D
 		}
 	}
 	
+	private void onExitErrorPressed()
+	{
+		errorMessagePanel.Visible= false;
+	}
+
+	
 	private void formatDistanceTable(int[] distance, int[] previous)
 	{
+		//Adds rows to create a table in the form of one big string
 		string distanceTable= "Node Distance Previous";
 		for(int i=0;i<distance.Length;i++)
 		{
-			distanceTable+=$"\n{i}    {distance[i]}         {previous[i]}";
+			if(distance[i]==int.MaxValue)
+			{
+				distanceTable+=$"\n{i}          ∞                 {previous[i]}";
+			}
+			else
+			{
+				distanceTable+=$"\n{i}          {distance[i]}                 {previous[i]}";
+			}
 		}
 		distanceTableLabel.Text= distanceTable;
+		distanceTableLabel.Visible= true;
 	}
 	
 	private void sourceNodeSubmitted(string sourceInput)
@@ -385,6 +423,9 @@ public partial class graphGen : Node2D
 		}
 		if(sourceNode<0 || sourceNode>=nodeCount)
 		{
+			//error for invalid source node
+			errorMessageLabel.Text="Invalid source node.";
+			errorMessagePanel.Visible= true;
 			GD.Print("Invalid source node");
 			sourceNodeInput.Text="";
 			sourceNode= 0;
@@ -396,12 +437,18 @@ public partial class graphGen : Node2D
 		bool isNum= int.TryParse(goalInput, out goalNode);
 		if(!isNum)
 		{
+			//error for invalid goal node
+			errorMessageLabel.Text="Invalid goal node.";
+			errorMessagePanel.Visible= true;
 			GD.Print("Invalid goal node");
 			goalNodeInput.Text="";
 			return;
 		}
 		if(goalNode<0 || goalNode>=nodeCount)
 		{
+			//error for invalid goal node
+			errorMessageLabel.Text="Invalid goal node.";
+			errorMessagePanel.Visible= true;
 			GD.Print("Invalid goal node");
 			goalNode= nodeCount-1;
 			goalNodeInput.Text="";
@@ -424,6 +471,11 @@ public partial class graphGen : Node2D
 	private void onQuitPanelButtonPressed()
 	{
 		formatPanel.Visible= false;
+	}
+	
+	private void backButtonPressed()
+	{
+		GetTree().ChangeSceneToFile("res://Scenes/startMenu.tscn");
 	}
 	
 }

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://xclsy077gswp"]
 
-[ext_resource type="Script" uid="uid://d1fpr2mj0sub4" path="res://Scripts/userAccess.cs" id="1_esh8b"]
+[ext_resource type="Script" path="res://Scripts/userAccess.cs" id="1_esh8b"]
 
 [node name="userAccess" type="Node" node_paths=PackedStringArray("emailRegBox", "usernameRegBox", "passwordRegBox", "userTagLoginBox", "passwordLoginBox", "errorMessage", "message")]
 script = ExtResource("1_esh8b")
@@ -115,6 +115,7 @@ layout_mode = 2
 text = "Submit"
 
 [node name="errorMessage" type="Panel" parent="."]
+visible = false
 offset_left = 1112.0
 offset_top = 302.0
 offset_right = 1482.0

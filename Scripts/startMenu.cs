@@ -3,16 +3,6 @@ using System;
 
 public partial class startMenu : Control
 {
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{	
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		
-	}
 	private void onGraphGenButtonPressed()
 	{
 		GD.Print("Working");
@@ -38,6 +28,26 @@ public partial class startMenu : Control
 	}
 	private void onLeaderboardPressed()
 	{
-		// Replace with function body.
+		GetTree().ChangeSceneToFile("res://Scenes/userLeaderboard.tscn");
+	}
+	private void logoutPressed()
+	{
+		GetTree().ChangeSceneToFile("res://Scenes/userAccess.tscn");
+	}
+	private void onInstructionsPressed()
+	{
+		GetTree().ChangeSceneToFile("res://Scenes/userInstructions.tscn");
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+

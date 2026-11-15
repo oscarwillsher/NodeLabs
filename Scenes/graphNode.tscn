@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cua1emqdofqne"]
 
-[ext_resource type="Script" uid="uid://djutgfk8cpfg2" path="res://Scripts/graphNode.cs" id="1_6rwe5"]
+[ext_resource type="Script" path="res://Scripts/graphNode.cs" id="1_6rwe5"]
 [ext_resource type="Texture2D" uid="uid://b8478hjj65gb" path="res://Images/red circle.png" id="2_cxebs"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_wytqb"]

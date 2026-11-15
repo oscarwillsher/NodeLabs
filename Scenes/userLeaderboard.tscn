@@ -1,6 +1,23 @@
 [gd_scene load_steps=2 format=3 uid="uid://dx4q0mcxo7amu"]
 
-[ext_resource type="Script" uid="uid://ihg2gnynrjdc" path="res://Scripts/userLeaderboard.cs" id="1_vsnnb"]
+[ext_resource type="Script" path="res://Scripts/userLeaderboard.cs" id="1_vsnnb"]
 
-[node name="userLeaderboard" type="Node"]
+[node name="userLeaderboard" type="Node" node_paths=PackedStringArray("leaderboardLabel")]
 script = ExtResource("1_vsnnb")
+leaderboardLabel = NodePath("leaderboardLabel")
+
+[node name="leaderboardLabel" type="Label" parent="."]
+offset_left = 540.0
+offset_top = 26.0
+offset_right = 1330.0
+offset_bottom = 1071.0
+
+[node name="backButton" type="Button" parent="."]
+offset_left = 1693.0
+offset_top = 975.0
+offset_right = 1915.0
+offset_bottom = 1075.0
+theme_override_font_sizes/font_size = 36
+text = "Return"
+
+[connection signal="pressed" from="backButton" to="." method="backButtonPressed"]
